@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 //Giulio's first commit
 
-
+//commit
 
 public class CookbookActivity extends Activity {
     /** Called when the activity is first created. */
