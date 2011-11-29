@@ -36,7 +36,7 @@ public class CookbookActivity extends ListActivity {
     InputStream fos;
     String FILENAME = "./res/raw/recipes";
     Resources myResources;
-    static final RecipeList list = new RecipeList();
+    RecipeList list;
     
 	/** Called when the activity is first created. */
 	@Override
@@ -46,21 +46,23 @@ public class CookbookActivity extends ListActivity {
 	  myResources = getResources();
 	 
 	
-
+	  /**
+	   * Opening the file in the project folder "res/raw/recipes" and generating the input stream
+	   */
 		fos = myResources.openRawResource(R.raw.recipes);
-	  
-		rd = new readFile(fos,list);
-	  rd.read();
+		rd = new readFile();
+	  list = rd.read(fos);
 		
-	 /* list.addRecipe(new Recipe("pizza","flour, tomato","bake everything", 1,Recipe.TypeOfMeal.MAIN,30,
-			  Recipe.Season.SPRING,"Italia",5f));
-	  list.addRecipe(new Recipe("hamburger","bread, meat","bake everything", 1,Recipe.TypeOfMeal.DESSERT,30,
-			  Recipe.Season.NULL,"Usa",5f));
-	  list.addRecipe(new Recipe("kebab","bread, lupus","bake everything", 1,Recipe.TypeOfMeal.SECOND,10,
-			  Recipe.Season.NULL,"turkey",4f));*/
+	 
+	  /**
+	   * adding the list to the recipeArray used to display it
+	   */
+	  RECIPES = new String[list.size()];
+	  for (int i =0; i<list.size();i++){
+		  RECIPES[i] = list.getRecipe(i).getName()+"\nType: "+list.getRecipe(i).getType();
+	  }
 	  
-	  RECIPES = new String[] {list.getRecipe(0).getName()+"\nType: "+list.getRecipe(0).getType(),
-				list.getRecipe(1).getName()+"\nType: "+list.getRecipe(1).getType(),list.getRecipe(2).getName()+ "\nType: "+list.getRecipe(2).getType()};
+				
 	  
 	  setListAdapter(new ArrayAdapter<String>(this, R.layout.list_item, RECIPES));
 	  
@@ -69,13 +71,17 @@ public class CookbookActivity extends ListActivity {
 	  final ListView lv = getListView();
 	  lv.setTextFilterEnabled(true);
 	  
+	  
+	  /**
+	   * Onclik show the info about the Recipe on a popup message
+	   */
 	  lv.setOnItemClickListener(new OnItemClickListener() {
 	    public void onItemClick(AdapterView<?> parent, View view,
 	        int position, long id) {
 	      // When clicked, show a toast with the TextView text
 	      Toast.makeText(getApplicationContext(), 
 	    "Ingredients: "+list.getRecipe(position).getIngredients()+"\nPreparation: "+list.getRecipe(position).getPreparation()
-	    +"\nType: "+list.getRecipe(position).getType(),
+	    +"\nType: "+list.getRecipe(position).getType()+"\nRegion: "+list.getRecipe(position).getRegion(),
 	          Toast.LENGTH_SHORT).show();
 	    	
 	    
@@ -86,7 +92,7 @@ public class CookbookActivity extends ListActivity {
 	  });
 	}
 	
-	
+	/** need it*/
 	 String[] RECIPES = new String[]{"lol"};
 	
 	
